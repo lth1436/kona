@@ -15,6 +15,7 @@ import common.log as trace1
 
 
 
+import common.MoveAvg as ma
 
 LaneChangeState = log.PathPlan.LaneChangeState
 LaneChangeDirection = log.PathPlan.LaneChangeDirection
@@ -94,6 +95,8 @@ class PathPlanner():
     self.atom_sr_boost_range = [0., 0.]
 
     self.carParams_valid = False
+
+    self.m_avg = ma.MoveAvg()
 
   def limit_ctrl(self, value, limit, offset ):
       p_limit = offset + limit
@@ -334,6 +337,8 @@ class PathPlanner():
                         list(self.LP.l_poly), list(self.LP.r_poly), list(self.LP.d_poly),
                         self.LP.l_prob, self.LP.r_prob, curvature_factor, v_ego_mpc, self.LP.lane_width)
 
+
+
     # reset to current steer angle if not active or overriding
     if active:
       delta_desired = self.mpc_solution[0].delta[1]
@@ -361,6 +366,11 @@ class PathPlanner():
           self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
 
     elif v_ego_kph < 30:  # 30
+      ma_model_sum = self.m_avg.get_avg(model_sum, 10)
+
+      xp = [-50,-30,-15,-10,-5,0,5,10,15,30,50]
+      fp1 = [-90,-52,-35,-28,-12,0,12,28,35,52,90]
+      ma_angle_steers_des_mpc = interp( ma_model_sum, xp, fp1 )
       """
       xp = [5,10]
       fp2 = [1,5]
@@ -368,14 +378,22 @@ class PathPlanner():
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
       """
 
+      limit_steers = abs(ma_angle_steers_des_mpc - angle_steers) * 0.5
+      limit_steers = max( limit_steers, 1 )
+      limit_steers = min( limit_steers, 5 )
+ 
+      self.angle_steers_des_mpc = self.limit_ctrl( ma_angle_steers_des_mpc, limit_steers, angle_steers )
+
+      """
       xp = [-5-2,0,2,5]    # 5 조향각 약12도, 10=>28 15=>35, 30=>52
       fp1 = [2,1,0.5,3,5]    # +
       fp2 = [5,3,0.5,1,2]    # -
       limit_steers1 = interp( model_sum, xp, fp1 )  # +
       limit_steers2 = interp( model_sum, xp, fp2 )  # -
       self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
+      """
 
-    elif v_ego_kph > 60 or v_ego_kph < 10: 
+    elif v_ego_kph > 60: 
       pass
     elif abs(angle_steers) > 10: # angle steer > 10
       """
