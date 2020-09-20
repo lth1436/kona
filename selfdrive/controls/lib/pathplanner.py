@@ -289,8 +289,8 @@ class PathPlanner():
       # starting
       elif self.lane_change_state == LaneChangeState.laneChangeStarting:
         # fade out over .5s
-        xp = [40,60,70,80]
-        fp2 = [0.5,1,1.5,2]
+        xp = [40,50,60,70]
+        fp2 = [0.5,0.8,1.2,1.8]
         lane_time = interp( v_ego_kph, xp, fp2 )        
         self.lane_change_ll_prob = max(self.lane_change_ll_prob - lane_time*DT_MDL, 0.0)
         # 98% certainty
@@ -360,11 +360,20 @@ class PathPlanner():
         if delta_steer < 0:
           self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
 
-    elif v_ego_kph < 10:  # 30
+    elif v_ego_kph < 30:  # 30
+      """
       xp = [5,10]
       fp2 = [1,5]
       limit_steers = interp( v_ego_kph, xp, fp2 )
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
+      """
+
+      xp = [-5-2,0,2,5]    # 5 조향각 약12도, 10=>28 15=>35, 30=>52
+      fp1 = [2,1,0.5,3,5]    # +
+      fp2 = [5,3,0.5,1,2]    # -
+      limit_steers1 = interp( model_sum, xp, fp1 )  # +
+      limit_steers2 = interp( model_sum, xp, fp2 )  # -
+      self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
 
     elif v_ego_kph > 60 or v_ego_kph < 10: 
       pass
