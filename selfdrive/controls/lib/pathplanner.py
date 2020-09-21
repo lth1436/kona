@@ -133,7 +133,7 @@ class PathPlanner():
     self.angle_steers_des_time = 0.0
 
 
-  def atom_tune( self, v_ego_kph, sr_value,  atomTuning ):  # 조향각에 따른 변화.
+  def atom_tune( self, v_ego_kph, sr_value,  atomTuning ):  # 조향각에 ?�른 변??
     self.sr_KPH = atomTuning.sRKPH
     self.sr_BPV = atomTuning.sRBPV
     self.sr_steerRatioV = atomTuning.sRsteerRatioV
@@ -373,15 +373,8 @@ class PathPlanner():
     elif v_ego_kph > 60: 
       pass
     elif abs(angle_steers) > 10: # angle steer > 10
-      """
-      #1. 방법
-      xp = [-50,-30,-15,-10,-5,0,5,10,15,30,50]
-      fp1 = [-90,-52,-35,-28,-12,0,12,28,35,52,90]
-      self.angle_steers_des_mpc = interp( model_sum, xp, fp1 )  # +
-      """
-
-      # 2.방법
-      xp = [-10,-5,0,5,10]    # 5 조향각 약12도, 10=>28 15=>35, 30=>52
+      # 2.
+      xp = [-10,-5,0,5,10]    # 5  10=>28 15=>35, 30=>52
       fp1 = [3,8,10,20,10]    # +
       fp2 = [10,20,10,8,3]    # -
       limit_steers1 = interp( model_sum, xp, fp1 )  # +
