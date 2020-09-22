@@ -133,7 +133,7 @@ class PathPlanner():
     self.angle_steers_des_time = 0.0
 
 
-  def atom_tune( self, v_ego_kph, sr_value,  atomTuning ):  # 조향각에 ?�른 변??
+  def atom_tune( self, v_ego_kph, sr_value,  atomTuning ):  # 조향각에 ?�른 변??
     self.sr_KPH = atomTuning.sRKPH
     self.sr_BPV = atomTuning.sRBPV
     self.sr_steerRatioV = atomTuning.sRsteerRatioV
@@ -264,6 +264,7 @@ class PathPlanner():
       self.lane_change_state = LaneChangeState.off
       self.lane_change_direction = LaneChangeDirection.none
     else:
+      c_prob = self.LP.l_prob + self.LP.r_prob
       torque_applied = steeringPressed and \
                         ((steeringTorque > 0 and self.lane_change_direction == LaneChangeDirection.left) or \
                           (steeringTorque < 0 and self.lane_change_direction == LaneChangeDirection.right))
@@ -304,7 +305,7 @@ class PathPlanner():
       elif self.lane_change_state == LaneChangeState.laneChangeFinishing:
         # fade in laneline over 1s
         self.lane_change_ll_prob = min(self.lane_change_ll_prob + DT_MDL, 1.0)
-        if self.lane_change_ll_prob > 0.99:
+        if self.lane_change_ll_prob > 0.99  and  abs(c_prob) < 0.3:
           self.lane_change_state = LaneChangeState.laneChangeDone
 
       # done
@@ -312,12 +313,15 @@ class PathPlanner():
         if not one_blinker:
           self.lane_change_state = LaneChangeState.off
 
+      self.trPATH.add( 'pathPlan  l_prob={:.3f}  r_prob={:.3f}   c_prob={:3.f}'.format( self.LP.l_prob, self.LP.r_prob, c_prob ) )
 
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
       self.lane_change_run_timer = 0.0
     else:
       self.lane_change_run_timer += DT_MDL
+      
+
 
     self.prev_one_blinker = one_blinker
 
@@ -423,7 +427,7 @@ class PathPlanner():
 
     if self.solution_invalid_cnt > 0:
       str_log3 = 'v_ego_kph={:.1f} angle_steers_des_mpc={:.1f} angle_steers={:.1f} solution_invalid_cnt={:.0f} mpc_solution={:.1f}/{:.0f}'.format( v_ego_kph, self.angle_steers_des_mpc, angle_steers, self.solution_invalid_cnt, self.mpc_solution[0].cost, mpc_nans )
-      self.trpathPlan.add( 'pathPlan {}  LOG_MPC={}'.format( str_log3, LOG_MPC ) )   
+      self.trpathPlan.add( 'pathPlan {}  LOG_MPC={}'.format( str_log3, LOG_MPC ) )
 
 
     if LOG_MPC:
