@@ -383,7 +383,7 @@ class PathPlanner():
 
     elif v_ego_kph < 30:  # 30
       xp = [10,20,30]
-      fp2 = [5,7,9]
+      fp2 = [1,3,5]
       limit_steers = interp( v_ego_kph, xp, fp2 )
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
     elif v_ego_kph > 60: 
