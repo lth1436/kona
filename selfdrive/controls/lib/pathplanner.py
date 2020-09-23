@@ -313,7 +313,7 @@ class PathPlanner():
         if not one_blinker:
           self.lane_change_state = LaneChangeState.off
 
-      self.trPATH.add( 'pathPlan  l_prob={:.3f}  r_prob={:.3f}   c_prob={:3.f}'.format( self.LP.l_prob, self.LP.r_prob, c_prob ) )
+      self.trPATH.add( 'pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( self.LP.l_prob, self.LP.r_prob, c_prob ) )
 
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
