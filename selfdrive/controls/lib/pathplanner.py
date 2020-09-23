@@ -13,7 +13,7 @@ from cereal import log
 from selfdrive.car.hyundai.interface import CarInterface
 import common.log as trace1
 
-
+from selfdrive.car.hyundai.values import Buttons
 
 import common.MoveAvg as ma
 
@@ -192,6 +192,9 @@ class PathPlanner():
     leftBlindspot = sm['carState'].leftBlindspot
     rightBlindspot = sm['carState'].rightBlindspot
 
+
+    
+
     lateralsRatom = CP.lateralsRatom
     atomTuning = CP.atomTuning
 
@@ -278,7 +281,12 @@ class PathPlanner():
 
       # State transitions
       # off
-      if self.lane_change_state == LaneChangeState.off and one_blinker and not self.prev_one_blinker and not below_lane_change_speed:
+      if cruiseState.cruiseSwState == Buttons.CANCEL:
+        self.lane_change_state = LaneChangeState.off
+        self.lane_change_ll_prob = 1.0
+        self.lane_change_wait_timer = 0
+
+      elif self.lane_change_state == LaneChangeState.off and one_blinker and not self.prev_one_blinker and not below_lane_change_speed:
         self.lane_change_state = LaneChangeState.preLaneChange
         self.lane_change_ll_prob = 1.0
         self.lane_change_wait_timer = 0
