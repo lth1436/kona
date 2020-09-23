@@ -264,7 +264,9 @@ class PathPlanner():
       self.lane_change_state = LaneChangeState.off
       self.lane_change_direction = LaneChangeDirection.none
     else:
-      c_prob = self.LP.l_prob + self.LP.r_prob
+      l_poly = self.LP.l_poly[3]
+      r_poly = self.LP.r_poly[3]
+      c_prob = l_poly + r_poly
       torque_applied = steeringPressed and \
                         ((steeringTorque > 0 and self.lane_change_direction == LaneChangeDirection.left) or \
                           (steeringTorque < 0 and self.lane_change_direction == LaneChangeDirection.right))
@@ -311,9 +313,11 @@ class PathPlanner():
       # done
       elif self.lane_change_state == LaneChangeState.laneChangeDone:
         if not one_blinker:
+          self.trPATH.add( 'end - pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( l_poly, r_poly, c_prob ) )
           self.lane_change_state = LaneChangeState.off
 
-      self.trPATH.add( 'pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( self.LP.l_prob, self.LP.r_prob, c_prob ) )
+      if self.lane_change_state != LaneChangeState.off:
+        self.trPATH.add( 'pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( l_poly, r_poly, c_prob ) )
 
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
