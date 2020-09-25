@@ -304,7 +304,7 @@ class PathPlanner():
       elif self.lane_change_state == LaneChangeState.laneChangeStarting:
         # fade out over .5s
         xp = [40,50,60,70]
-        fp2 = [0.5,0.8,1.2,1.8]
+        fp2 = [0.5,0.8,1.2,1.5]
         lane_time = interp( v_ego_kph, xp, fp2 )        
         self.lane_change_ll_prob = max(self.lane_change_ll_prob - lane_time*DT_MDL, 0.0)
         # 98% certainty
@@ -324,8 +324,6 @@ class PathPlanner():
           #self.trPATH.add( 'end - pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( l_poly, r_poly, c_prob ) )
           self.lane_change_state = LaneChangeState.off
 
-      #if self.lane_change_state != LaneChangeState.off:
-      #  self.trPATH.add( 'pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( l_poly, r_poly, c_prob ) )
 
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
@@ -370,7 +368,7 @@ class PathPlanner():
 
     # atom
     if steeringPressed:
-      delta_steer = self.angle_steers_des_mpc - angle_steers
+      delta_steer = org_angle_steers_des - angle_steers
       xp = [-255,0,255]
       fp2 = [5,0,5]
       limit_steers = interp( steeringTorque, xp, fp2 )
@@ -381,9 +379,9 @@ class PathPlanner():
         if delta_steer < 0:
           self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
 
-    elif v_ego_kph < 40:  # 30
-      xp = [3,20,30,40]
-      fp2 = [1,3,5,7]
+    elif v_ego_kph < 35:  # 30
+      xp = [3,10,35]
+      fp2 = [1,3,7]
       limit_steers = interp( v_ego_kph, xp, fp2 )
       self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
     elif v_ego_kph > 60: 
@@ -397,6 +395,17 @@ class PathPlanner():
       limit_steers2 = interp( model_sum, xp, fp2 )  # -
       self.angle_steers_des_mpc = self.limit_ctrl1( org_angle_steers_des, limit_steers1, limit_steers2, angle_steers )
       
+    # 최대 허용 제어 조향각.
+    delta_steer = self.angle_steers_des_mpc - angle_steers
+    if delta_steer > 10:
+      p_angle_steers = angle_steers + 10
+      self.angle_steers_des_mpc = p_angle_steers
+    elif delta_steer < -10:
+      m_angle_steers = angle_steers - 10
+      self.angle_steers_des_mpc = m_angle_steers
+    
+
+    
 
     #  Check for infeasable MPC solution
     mpc_nans = any(math.isnan(x) for x in self.mpc_solution[0].delta)
