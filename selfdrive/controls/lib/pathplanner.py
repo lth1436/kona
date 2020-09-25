@@ -223,9 +223,9 @@ class PathPlanner():
     angleOffsetAverage = sm['liveParameters'].angleOffsetAverage
     stiffnessFactor = sm['liveParameters'].stiffnessFactor
 
-    if (self.atom_timer_cnt % 100) == 0:
-      str_log3 = 'angleOffset={:.1f} angleOffsetAverage={:.3f} steerRatio={:.2f} stiffnessFactor={:.3f} '.format( angle_offset, angleOffsetAverage, self.steerRatio, stiffnessFactor )
-      self.trLearner.add( 'LearnerParam {}  carParams={}'.format( str_log3, self.carParams_valid ) )       
+    #if (self.atom_timer_cnt % 100) == 0:
+    #  str_log3 = 'angleOffset={:.1f} angleOffsetAverage={:.3f} steerRatio={:.2f} stiffnessFactor={:.3f} '.format( angle_offset, angleOffsetAverage, self.steerRatio, stiffnessFactor )
+    #  self.trLearner.add( 'LearnerParam {}  carParams={}'.format( str_log3, self.carParams_valid ) )       
 
     if lateralsRatom.learnerParams:
       pass
@@ -446,9 +446,9 @@ class PathPlanner():
     plan_send.pathPlan.steerActuatorDelay = steerActuatorDelay
     pm.send('pathPlan', plan_send)
 
-    if self.solution_invalid_cnt > 0:
-      str_log3 = 'v_ego_kph={:.1f} angle_steers_des_mpc={:.1f} angle_steers={:.1f} solution_invalid_cnt={:.0f} mpc_solution={:.1f}/{:.0f}'.format( v_ego_kph, self.angle_steers_des_mpc, angle_steers, self.solution_invalid_cnt, self.mpc_solution[0].cost, mpc_nans )
-      self.trpathPlan.add( 'pathPlan {}  LOG_MPC={}'.format( str_log3, LOG_MPC ) )
+    #if self.solution_invalid_cnt > 0:
+    #  str_log3 = 'v_ego_kph={:.1f} angle_steers_des_mpc={:.1f} angle_steers={:.1f} solution_invalid_cnt={:.0f} mpc_solution={:.1f}/{:.0f}'.format( v_ego_kph, self.angle_steers_des_mpc, angle_steers, self.solution_invalid_cnt, self.mpc_solution[0].cost, mpc_nans )
+    #  self.trpathPlan.add( 'pathPlan {}  LOG_MPC={}'.format( str_log3, LOG_MPC ) )
 
 
     if LOG_MPC:
