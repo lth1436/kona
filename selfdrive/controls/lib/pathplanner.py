@@ -324,7 +324,6 @@ class PathPlanner():
       # done
       elif self.lane_change_state == LaneChangeState.laneChangeDone:
         if not one_blinker:
-          #self.trPATH.add( 'end - pathPlan  l_prob={}  r_prob={}   c_prob={}'.format( l_poly, r_poly, c_prob ) )
           self.lane_change_state = LaneChangeState.off
 
 
@@ -416,11 +415,13 @@ class PathPlanner():
     if mpc_nans:
       self.libmpc.init(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
       self.cur_state[0].delta = math.radians(angle_steers - angle_offset) / VM.sR
-      self.trPATH.add( 'mpc_nans  libmpc  steer_rate_cost={}  delta={}   angle_steers={}'.format( self.steer_rate_cost, self.cur_state[0].delta, angle_steers ) )
+      
 
       if t > self.last_cloudlog_t + 5.0:
         self.last_cloudlog_t = t
         cloudlog.warning("Lateral mpc - nan: True")
+
+    self.trPATH.add( 'mpc_nans ={}  libmpc  steer_rate_cost={}  delta={}   angle_steers={}'.format( mpc_nans, self.steer_rate_cost, self.cur_state[0].delta, angle_steers ) )
 
     if self.mpc_solution[0].cost > 20000. or mpc_nans:   # TODO: find a better way to detect when MPC did not converge
       self.solution_invalid_cnt += 1
