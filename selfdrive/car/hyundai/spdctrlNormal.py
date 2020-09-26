@@ -148,7 +148,7 @@ class SpdctrlNormal(SpdController):
             set_speed = model_speed
             delta_spd = abs(model_speed - v_ego_kph)
             xp = [2,10,30]
-            fp = [100,50,20]
+            fp = [100,30,15]
             wait_time_cmd = interp( delta_spd, xp, fp )
 
         # 2. 커브 감속.
