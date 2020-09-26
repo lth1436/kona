@@ -238,7 +238,10 @@ class PathPlanner():
         self.steer_rate_cost = CP.steerRateCost
         self.steerRatio = CP.steerRatio
    
-      
+
+      xp = [-5,0,5]
+      fp = [0.4, 0.8, 0.4] 
+      self.steer_rate_cost = interp( angle_steers, xp, fp )
       steerRatio = self.atom_tune( v_ego_kph, angle_steers, atomTuning )
       self.steerRatio = self.atom_steer( steerRatio, 2, 0.05 )
 
@@ -413,6 +416,7 @@ class PathPlanner():
     if mpc_nans:
       self.libmpc.init(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
       self.cur_state[0].delta = math.radians(angle_steers - angle_offset) / VM.sR
+      self.trPATH.add( 'mpc_nans  libmpc  steer_rate_cost={}  delta={}   angle_steers={}'.format( self.steer_rate_cost, self.cur_state[0].delta, angle_steers ) )
 
       if t > self.last_cloudlog_t + 5.0:
         self.last_cloudlog_t = t
