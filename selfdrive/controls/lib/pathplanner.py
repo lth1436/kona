@@ -239,9 +239,9 @@ class PathPlanner():
         self.steerRatio = CP.steerRatio
    
 
-      xp = [-5,0,5]
-      fp = [0.4, 0.8, 0.4] 
-      self.steer_rate_cost = interp( angle_steers, xp, fp )
+      #xp = [-5,0,5]
+      #fp = [0.4, 0.8, 0.4] 
+      #self.steer_rate_cost = interp( angle_steers, xp, fp )
       steerRatio = self.atom_tune( v_ego_kph, angle_steers, atomTuning )
       self.steerRatio = self.atom_steer( steerRatio, 2, 0.05 )
 
@@ -421,7 +421,7 @@ class PathPlanner():
         self.last_cloudlog_t = t
         cloudlog.warning("Lateral mpc - nan: True")
 
-    self.trPATH.add( 'mpc_nans ={}  libmpc  steer_rate_cost={}  delta={}   angle_steers={}'.format( mpc_nans, self.steer_rate_cost, self.cur_state[0].delta, angle_steers ) )
+    #self.trPATH.add( 'mpc_nans ={}  libmpc  steer_rate_cost={}  delta={}   angle_steers={}'.format( mpc_nans, self.steer_rate_cost, self.cur_state[0].delta, angle_steers ) )
 
     if self.mpc_solution[0].cost > 20000. or mpc_nans:   # TODO: find a better way to detect when MPC did not converge
       self.solution_invalid_cnt += 1
