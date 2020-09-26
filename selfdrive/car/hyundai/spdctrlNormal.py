@@ -147,8 +147,8 @@ class SpdctrlNormal(SpdController):
         if int(self.cruise_set_mode) == 4:
             set_speed = model_speed
             delta_spd = abs(model_speed - v_ego_kph)
-            xp = [5,10,50]
-            fp = [200,150,20]
+            xp = [2,10,30]
+            fp = [100,50,20]
             wait_time_cmd = interp( delta_spd, xp, fp )
 
         # 2. 커브 감속.
