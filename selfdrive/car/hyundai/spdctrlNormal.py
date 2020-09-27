@@ -153,7 +153,7 @@ class SpdctrlNormal(SpdController):
 
         # 2. 커브 감속.
         #if self.cruise_set_speed_kph >= 100:
-        if CS.clu_Vanz >= 100:            
+        elif CS.clu_Vanz >= 100:            
             if model_speed < 50:
                 set_speed = self.cruise_set_speed_kph - 7 
                 self.seq_step_debug = 30
