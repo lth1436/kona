@@ -399,11 +399,12 @@ class PathPlanner():
       
     # 최대 허용 제어 조향각.
     delta_steer = self.angle_steers_des_mpc - angle_steers
-    if delta_steer > 10:
-      p_angle_steers = angle_steers + 10
+    ANGLE_LIMIT = 8
+    if delta_steer > ANGLE_LIMIT:
+      p_angle_steers = angle_steers + ANGLE_LIMIT
       self.angle_steers_des_mpc = p_angle_steers
-    elif delta_steer < -10:
-      m_angle_steers = angle_steers - 10
+    elif delta_steer < -ANGLE_LIMIT:
+      m_angle_steers = angle_steers - ANGLE_LIMIT
       self.angle_steers_des_mpc = m_angle_steers
     
 
