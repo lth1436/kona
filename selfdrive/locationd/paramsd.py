@@ -99,8 +99,8 @@ def main(sm=None, pm=None):
       'angleOffsetAverage': 0.0,
     }
     cloudlog.info("Parameter learner resetting to default values")
-  #else:
-  params['steerRatio'] = CP.steerRatio
+  else:
+    params['steerRatio'] = CP.steerRatio
 
   learner = ParamsLearner(CP, params['steerRatio'], params['stiffnessFactor'], math.radians(params['angleOffsetAverage']))
   min_sr, max_sr = 0.5 * CP.steerRatio, 2.0 * CP.steerRatio
@@ -142,7 +142,7 @@ def main(sm=None, pm=None):
       if i % 6000 == 0:   # once a minute
         params = {
           'carFingerprint': CP.carFingerprint,
-          'steerRatio': CP.steerRatio, # msg.liveParameters.steerRatio,
+          'steerRatio': msg.liveParameters.steerRatio,
           'stiffnessFactor': msg.liveParameters.stiffnessFactor,
           'angleOffsetAverage': msg.liveParameters.angleOffsetAverage,
         }
