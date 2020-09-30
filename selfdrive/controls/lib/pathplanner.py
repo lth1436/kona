@@ -306,8 +306,8 @@ class PathPlanner():
       # starting
       elif self.lane_change_state == LaneChangeState.laneChangeStarting:
         # fade out over .5s
-        xp = [40,50,60,70]
-        fp2 = [0.2,0.6,1.2,1.5]
+        xp = [40,70]
+        fp2 = [0.1,1.8]
         lane_time = interp( v_ego_kph, xp, fp2 )        
         self.lane_change_ll_prob = max(self.lane_change_ll_prob - lane_time*DT_MDL, 0.0)
         # 98% certainty
@@ -318,7 +318,7 @@ class PathPlanner():
       elif self.lane_change_state == LaneChangeState.laneChangeFinishing:
         # fade in laneline over 1s
         self.lane_change_ll_prob = min(self.lane_change_ll_prob + DT_MDL, 1.0)
-        if self.lane_change_ll_prob > 0.99  and  abs(c_prob) < 0.3:
+        if self.lane_change_ll_prob > 0.99  and  abs(c_prob) < 0.5:
           self.lane_change_state = LaneChangeState.laneChangeDone
 
       # done
@@ -371,15 +371,24 @@ class PathPlanner():
     # atom
     if steeringPressed:
       delta_steer = org_angle_steers_des - angle_steers
-      xp = [-255,0,255]
-      fp2 = [5,0,5]
-      limit_steers = interp( steeringTorque, xp, fp2 )
-      if steeringTorque < 0:  # right
-        if delta_steer > 0:
-          self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
-      elif steeringTorque > 0:  # left
-        if delta_steer < 0:
-          self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
+      if angle_steers > 10 and steeringTorque > 0:
+        delta_steer = max( delta_steer, 0 )
+        delta_steer = min( delta_steer, 10 )
+        self.angle_steers_des_mpc = angle_steers + delta_steer
+      elif angle_steers < -10  and steeringTorque < 0:
+        delta_steer = min( delta_steer, 0 )
+        delta_steer = max( delta_steer, -10 )        
+        self.angle_steers_des_mpc = angle_steers + delta_steer
+      else:
+        xp = [-255,0,255]
+        fp2 = [5,0,5]
+        limit_steers = interp( steeringTorque, xp, fp2 )
+        if steeringTorque < 0:  # right
+          if delta_steer > 0:
+            self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
+        elif steeringTorque > 0:  # left
+          if delta_steer < 0:
+            self.angle_steers_des_mpc = self.limit_ctrl( org_angle_steers_des, limit_steers, angle_steers )
 
     elif v_ego_kph < 15:  # 30
       xp = [3,10,15]
