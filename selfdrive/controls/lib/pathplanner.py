@@ -11,11 +11,11 @@ from common.numpy_fast import interp
 import cereal.messaging as messaging
 from cereal import log
 from selfdrive.car.hyundai.interface import CarInterface
-import common.log as trace1
-
 from selfdrive.car.hyundai.values import Buttons
 
+import common.log as trace1
 import common.MoveAvg as ma
+
 
 LaneChangeState = log.PathPlan.LaneChangeState
 LaneChangeDirection = log.PathPlan.LaneChangeDirection
