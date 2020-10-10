@@ -174,7 +174,9 @@ typedef struct UIScene {
   cereal::HealthData::HwType hwType;
   int satelliteCount;
   uint8_t athenaStatus;
+  int    nTimer;
 
+  std::string ipAddr;
 
   // pathcoloring
   struct _KEGMEN_
@@ -267,6 +269,8 @@ typedef struct UIScene {
     int nLightSensor;
   } params;
 
+  
+  
 } UIScene;
 
 typedef struct {
