@@ -325,7 +325,7 @@ class CarController():
       self.traceCC.add( str_log )        
 
     # 20 Hz LFA MFA message
-    if frame % 5 == 0 and self.car_fingerprint in [CAR.SONATA, CAR.PALISADE, CAR.GRANDEUR_H_20]:
+    if frame % 5 == 0 and self.car_fingerprint in [CAR.SONATA, CAR.PALISADE, CAR.KONA_HEV, CAR.GRANDEUR_H_20]:
       can_sends.append(create_lfa_mfa(self.packer, frame, enabled))
 
     # counter inc
