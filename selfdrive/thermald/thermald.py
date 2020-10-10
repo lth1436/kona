@@ -18,6 +18,8 @@ import cereal.messaging as messaging
 from selfdrive.loggerd.config import get_available_percent
 from selfdrive.pandad import get_expected_signature
 from selfdrive.thermald.power_monitoring import PowerMonitoring, get_battery_capacity, get_battery_status, get_battery_current, get_battery_voltage, get_usb_present
+import re
+import subprocess
 
 FW_SIGNATURE = get_expected_signature()
 
@@ -198,6 +200,10 @@ def thermald_thread():
   accepted_terms = 0
   completed_training = 0
   panda_signature = 0
+  
+  ts_last_ip = 0
+  ip_addr = '255.255.255.255'
+  
   while 1:
     OpkrLoadStep += 1
     if OpkrLoadStep == 1:
@@ -282,6 +288,17 @@ def thermald_thread():
     if is_uno:
       msg.thermal.batteryPercent = 100
       msg.thermal.batteryStatus = "Charging"
+      
+    # update ip every 10 seconds
+    ts = sec_since_boot()
+    if ts - ts_last_ip >= 10.:
+      try:
+        result = subprocess.check_output(["ifconfig", "wlan0"], encoding='utf8')  # pylint: disable=unexpected-keyword-arg
+        ip_addr = re.findall(r"inet addr:((\d+\.){3}\d+)", result)[0][0]
+      except:
+        ip_addr = 'N/A'
+      ts_last_ip = ts
+    msg.thermal.ipAddr = ip_addr
 
     current_filter.update(msg.thermal.batteryCurrent / 1e6)
 
@@ -473,7 +490,7 @@ def thermald_thread():
     should_start_prev = should_start
 
     if usb_power:
-      pm.charging_ctrl( msg, ts, 60, 40 )
+      pm.charging_ctrl( msg, ts, 70, 60 )
 
     # report to server once per minute
     if (count % int(60. / DT_TRML)) == 0:
