@@ -475,17 +475,70 @@ static void ui_draw_vision_lanes(UIState *s) {
     update_all_lane_lines_data(s, scene->model.right_lane, pvd + MODEL_LANE_PATH_CNT);
     s->model_changed = false;
   }
+
+  int left_red_lvl = 0;
+  int right_red_lvl = 0;
+  int left_green_lvl = 0;
+  int right_green_lvl = 0;
+  int left_blue_lvl = 0;
+  int right_blue_lvl = 0;
+
+  if ( scene->model.left_lane.prob > 0.5 ){
+    left_green_lvl = int(255 - (1 - scene->model.left_lane.prob) * 1.1 * 255);
+    left_red_lvl = int((1 - scene->model.left_lane.prob) * 1.568 * 255);
+  }
+  else {
+    left_red_lvl = int(200 + (0.5 - scene->model.left_lane.prob) * 110);
+    left_green_lvl = int(115 - (0.5 - scene->model.left_lane.prob) * 230);
+  }
+
+  if ( scene->model.right_lane.prob > 0.5 ){
+    right_green_lvl = int(255 - (1 - scene->model.left_lane.prob) * 1.1 * 255);
+    right_red_lvl = int((1 - scene->model.left_lane.prob) * 1.568 * 255);
+  }
+  else {
+    right_red_lvl = int(200 + (0.5 - scene->model.left_lane.prob) * 110);
+    right_green_lvl = int(115 - (0.5 - scene->model.left_lane.prob) * 230);
+  }
+
+  NVGcolor colorLeft = nvgRGBA (left_red_lvl, left_green_lvl, left_blue_lvl, 255);
+  NVGcolor colorRight = nvgRGBA (right_red_lvl, right_green_lvl, right_blue_lvl, 255);
+ 
+  if( scene->leftBlinker )
+  {
+    if( scene->leftBlindspot )
+      colorLeft  = nvgRGBAf( 0.9, 0.1, 0.1, 1.0 ); // 왼쪽 차선변경 시도시 차량 감지되면 레드
+    else
+      colorLeft  = nvgRGBAf( 0.1, 0.9, 0.1, 1.0 ); // 왼쪽 차선변경 시도시 차량 없으면 그린
+    if( scene->nTimer & 0x01 )
+    {
+       colorLeft = nvgRGBAf( 0.9, 0.9, 0.1, 0.2 ); // 점멸시 옅은 노란색
+    }      
+  }
+
+  if( scene->rightBlinker )
+  {
+    if( scene->rightBlindspot )
+        colorRight  = nvgRGBAf( 0.9, 0.1, 0.1, 1.0 ); // 오른쪽 차선변경 시도시 차량 감지되면 레드
+    else
+        colorRight  = nvgRGBAf( 0.1, 0.9, 0.1, 1.0 ); // 오른쪽 차선변경 시도시 차량 없으면 그린
+    if( scene->nTimer & 0x01 )
+    {
+       colorRight = nvgRGBAf( 0.9, 0.9, 0.1, 0.2 ); // 점멸시 옅은 노란색
+    }
+  }
+  
   // Draw left lane edge
   ui_draw_lane(
       s, &scene->model.left_lane,
       pvd,
-      nvgRGBAf(1.0, 1.0, 1.0, scene->model.left_lane.prob));
+      colorLeft );
 
   // Draw right lane edge
   ui_draw_lane(
       s, &scene->model.right_lane,
       pvd + MODEL_LANE_PATH_CNT,
-      nvgRGBAf(1.0, 1.0, 1.0, scene->model.right_lane.prob));
+      colorRight );
 
   if( s->livempc_or_radarstate_changed ) {
     update_all_track_data(s);
@@ -703,20 +756,16 @@ static void ui_draw_debug(UIState *s)
   
      
   //ui_print( s, x_pos, y_pos+0, "cO:%.3f  %d, %d",scene.carParams.lateralsRatom.cameraOffset, scene.cruiseState.cruiseSwState, s->livempc_or_radarstate_changed );
-  ui_print( s, x_pos, y_pos+0,   "sR:%.2f, %.2f", scene.liveParams.steerRatio, scene.pathPlan.steerRatio );
-  ui_print( s, x_pos, y_pos+50,  "aO:%.2f, %.2f", scene.liveParams.angleOffset, scene.pathPlan.angleOffset );
-  ui_print( s, x_pos, y_pos+100, "aA:%.2f", scene.liveParams.angleOffsetAverage );
-  ui_print( s, x_pos, y_pos+150, "sF:%.2f", scene.liveParams.stiffnessFactor );
-
-  ui_print( s, x_pos, y_pos+200, "aD:%.2f", scene.pathPlan.steerActuatorDelay );
-  ui_print( s, x_pos, y_pos+250, "lW:%.2f", scene.pathPlan.laneWidth );
-  ui_print( s, x_pos, y_pos+300, "prob:%.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
-  ui_print( s, x_pos, y_pos+350, "Poly:%.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
-  ui_print( s, x_pos, y_pos+400, "model_sum:%.1f" , scene.model_sum);
-  ui_print( s, x_pos, y_pos+450, "awareness:%.2f" , scene.awareness_status);
-
-
-
+  ui_print( s, x_pos, y_pos+0,   "sR : %.2f", scene.pathPlan.steerRatio );
+  ui_print( s, x_pos, y_pos+50,  "aO : %.2f", scene.pathPlan.angleOffset );
+  ui_print( s, x_pos, y_pos+100, "aD : %.2f", scene.pathPlan.steerActuatorDelay );
+  //ui_print( s, x_pos, y_pos+150, "Width : %.2f", scene.pathPlan.laneWidth );
+  ui_print( s, x_pos, y_pos+150, "prob : %.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
+  //ui_print( s, x_pos, y_pos+200, "Poly : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
+  ui_print( s, x_pos, y_pos+200, "model_sum : %.1f" , scene.model_sum);
+  
+  ui_print( s, x_pos+270, y_pos+800, "좌측간격(%%)       차선폭         우측간격(%%)");
+  ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
 
   ui_print( s, 0, 1020, "%s", scene.alert.text1 );
   ui_print( s, 0, 1078, "%s", scene.alert.text2 );
@@ -731,7 +780,7 @@ static void ui_draw_debug(UIState *s)
   switch( scene.params.nOpkrAccelProfile  )
   {
     case 1: strcpy( str_msg, "1.slow" ); nColor = nvgRGBA(100, 100, 255, 255); break;
-    case 2: strcpy( str_msg, "2.normal" );    nColor = COLOR_WHITE;  break;
+    case 2: strcpy( str_msg, "2.NORMAL" );    nColor = COLOR_WHITE;  break;
     case 3: strcpy( str_msg, "3.fast" );  nColor = nvgRGBA(255, 100, 100, 255);  break;
     default :  sprintf( str_msg, "%d", scene.params.nOpkrAccelProfile ); nColor = COLOR_WHITE;  break;
   }
@@ -743,9 +792,9 @@ static void ui_draw_debug(UIState *s)
   {
     case 0: strcpy( str_msg, "0.OP MODE" ); nColor = COLOR_WHITE; break;
     case 1: strcpy( str_msg, "1.CURVE" );    nColor = nvgRGBA(200, 200, 255, 255);  break;
-    case 2: strcpy( str_msg, "2.FWD CAR" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
+    case 2: strcpy( str_msg, "2.DISTANCE" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
     case 3: strcpy( str_msg, "3.HYUNDAI" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
-    case 4: strcpy( str_msg, "4.CURVATURE" );   nColor = nvgRGBA(200, 255, 255, 255);  break;
+    case 4: strcpy( str_msg, "4.CURVATURE" ); nColor = nvgRGBA(200, 255, 255, 255); break;
     default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);  
@@ -978,7 +1027,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w )
   int bb_h = 5;
   NVGcolor lab_color = nvgRGBA(255, 255, 255, 200);
   NVGcolor uom_color = nvgRGBA(255, 255, 255, 200);
-  int value_fontSize=25;
+  int value_fontSize=30;
   int label_fontSize=15;
   int uom_fontSize = 15;
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
@@ -1045,7 +1094,7 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
   int bb_h = 5;
   NVGcolor lab_color = nvgRGBA(255, 255, 255, 200);
   NVGcolor uom_color = nvgRGBA(255, 255, 255, 200);
-  int value_fontSize=25;
+  int value_fontSize=30;
   int label_fontSize=15;
   int uom_fontSize = 15;
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
