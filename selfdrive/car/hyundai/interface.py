@@ -85,13 +85,11 @@ class CarInterface(CarInterfaceBase):
       #ret.lateralTuning.pid.kf = 0.00006
       ret.mass = 1453. + STD_CARGO_KG
       ret.wheelbase = 2.6      
-      ret.steerRateCost = 1.0       
+      ret.steerRateCost = 0.7       
       ret.steerLimitTimer = 0.8
       ret.steerActuatorDelay = 0.250
-      tire_stiffness_factor = 0.500
-      #tire_stiffness_factor = 0.996  
+      tire_stiffness_factor = 0.868
       ret.steerRatio = 13.73 * 1.15   # SPEC
-      ##ret.steerRatio = 13.45
       #ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       #ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]       
       #lqr
