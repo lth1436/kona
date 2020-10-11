@@ -28,8 +28,8 @@ NetworkType = log.ThermalData.NetworkType
 NetworkStrength = log.ThermalData.NetworkStrength
 CURRENT_TAU = 15.   # 15s time constant
 CPU_TEMP_TAU = 5.   # 5s time constant
-DAYS_NO_CONNECTIVITY_MAX = 7  # do not allow to engage after a week without internet
-DAYS_NO_CONNECTIVITY_PROMPT = 4  # send an offroad prompt after 4 days with no internet
+DAYS_NO_CONNECTIVITY_MAX = 999  # do not allow to engage after a week without internet
+DAYS_NO_CONNECTIVITY_PROMPT = 990  # send an offroad prompt after 4 days with no internet
 DISCONNECT_TIMEOUT = 5.  # wait 5 seconds before going offroad after disconnect so you get an alert
 
 LEON = False
@@ -490,7 +490,7 @@ def thermald_thread():
     should_start_prev = should_start
 
     if usb_power:
-      pm.charging_ctrl( msg, ts, 70, 60 )
+      pm.charging_ctrl( msg, ts, 90, 70 )
 
     # report to server once per minute
     if (count % int(60. / DT_TRML)) == 0:
