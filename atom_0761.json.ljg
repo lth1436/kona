@@ -1,6 +1,6 @@
 {
   "tun_type": "lqr",
-  "cv_BPV": [[30,255]],
+  "cv_BPV": [[20,255]],
   "cv_KPH": [0],
   "cv_sMaxV": [[420,180]],
   "cv_sdDNV": [[5,4]],
@@ -13,7 +13,7 @@
   "sR_steerRatioV": [[13.73,13.73]],
   "steerLimitTimer": 0.8,
   "steerOffset": 2.95,
-  "steerRateCost": 0.7,
+  "steerRateCost": 0.5,
   "cameraOffset": 0.06,
   "sR_pid_KiV": [[0.04,0.04]],
   "sR_pid_KpV": [[0.25,0.25]],
