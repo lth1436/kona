@@ -756,19 +756,19 @@ static void ui_draw_debug(UIState *s)
   
      
   //ui_print( s, x_pos, y_pos+0, "cO:%.3f  %d, %d",scene.carParams.lateralsRatom.cameraOffset, scene.cruiseState.cruiseSwState, s->livempc_or_radarstate_changed );
-  ui_print( s, x_pos, y_pos+0,   "sR : %.2f", scene.pathPlan.steerRatio );
-  ui_print( s, x_pos, y_pos+50,  "aO : %.2f", scene.pathPlan.angleOffset );
-  ui_print( s, x_pos, y_pos+100, "aD : %.2f", scene.pathPlan.steerActuatorDelay );
-  //ui_print( s, x_pos, y_pos+150, "Width : %.2f", scene.pathPlan.laneWidth );
-  ui_print( s, x_pos, y_pos+150, "prob : %.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
-  //ui_print( s, x_pos, y_pos+200, "Poly : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
-  ui_print( s, x_pos, y_pos+200, "model_sum : %.1f" , scene.model_sum);
+  ui_print( s, x_pos, y_pos+50,   "sR : %.2f", scene.pathPlan.steerRatio );
+  ui_print( s, x_pos, y_pos+100,  "aO : %.2f", scene.pathPlan.angleOffset );
+  //ui_print( s, x_pos, y_pos+100, "aD : %.2f", scene.pathPlan.steerActuatorDelay );
+  ui_print( s, x_pos, y_pos+150, "wD : %.2f", scene.pathPlan.laneWidth );
+  //ui_print( s, x_pos, y_pos+150, "prob : %.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
+  ui_print( s, x_pos, y_pos+200, "pL : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
+  //ui_print( s, x_pos, y_pos+200, "model_sum : %.1f" , scene.model_sum);
   
-  ui_print( s, x_pos+270, y_pos+800, "좌측간격(%%)       차선폭         우측간격(%%)");
-  ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
+  //ui_print( s, x_pos+270, y_pos+800, "좌측간격(%%)       차선폭         우측간격(%%)");
+  //ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
 
-  ui_print( s, 0, 1020, "%s", scene.alert.text1 );
-  ui_print( s, 0, 1078, "%s", scene.alert.text2 );
+  //ui_print( s, 0, 1020, "%s", scene.alert.text1 );
+  //ui_print( s, 0, 1078, "%s", scene.alert.text2 );
 
 
   if( scene.params.nOpkrAccelProfile == 0 )  return;
@@ -779,26 +779,26 @@ static void ui_draw_debug(UIState *s)
   nvgFontSize(s->vg, 30);
   switch( scene.params.nOpkrAccelProfile  )
   {
-    case 1: strcpy( str_msg, "1.slow" ); nColor = nvgRGBA(100, 100, 255, 255); break;
-    case 2: strcpy( str_msg, "2.NORMAL" );    nColor = COLOR_WHITE;  break;
-    case 3: strcpy( str_msg, "3.fast" );  nColor = nvgRGBA(255, 100, 100, 255);  break;
+    case 1: strcpy( str_msg, "SLOW" ); nColor = nvgRGBA(100, 100, 255, 255); break;
+    case 2: strcpy( str_msg, "NORMAL" );    nColor = COLOR_WHITE;  break;
+    case 3: strcpy( str_msg, "FAST" );  nColor = nvgRGBA(255, 100, 100, 255);  break;
     default :  sprintf( str_msg, "%d", scene.params.nOpkrAccelProfile ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);
-  ui_print( s, x_pos, y_pos+0, "%s", str_msg );
+  ui_print( s, x_pos, y_pos+150, "%s", str_msg );
 
   nvgFontSize(s->vg, 80);
   switch( scene.cruiseState.modeSel  )
   {
-    case 0: strcpy( str_msg, "0.OP MODE" ); nColor = COLOR_WHITE; break;
-    case 1: strcpy( str_msg, "1.CURVE" );    nColor = nvgRGBA(200, 200, 255, 255);  break;
-    case 2: strcpy( str_msg, "2.DISTANCE" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
-    case 3: strcpy( str_msg, "3.HYUNDAI" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
-    case 4: strcpy( str_msg, "4.CURVATURE" ); nColor = nvgRGBA(200, 255, 255, 255); break;
+    case 0: strcpy( str_msg, "OP MODE" ); nColor = COLOR_WHITE; break;
+    case 1: strcpy( str_msg, "CURVE" );    nColor = nvgRGBA(200, 200, 255, 255);  break;
+    case 2: strcpy( str_msg, "DISTANCE" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
+    case 3: strcpy( str_msg, "HYUNDAI" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
+    case 4: strcpy( str_msg, "CURVATURE" ); nColor = nvgRGBA(200, 255, 255, 255); break;
     default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);  
-  ui_print( s, x_pos, y_pos+80, str_msg );
+  ui_print( s, x_pos, y_pos+100, str_msg );
 }
 
 
