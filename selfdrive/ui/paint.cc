@@ -779,26 +779,26 @@ static void ui_draw_debug(UIState *s)
   nvgFontSize(s->vg, 40);
   switch( scene.params.nOpkrAccelProfile  )
   {
-    case 1: strcpy( str_msg, "SLOW" ); nColor = nvgRGBA(100, 100, 255, 255); break;
+    case 1: strcpy( str_msg, "SLOW" ); nColor = COLOR_WHITE; break;
     case 2: strcpy( str_msg, "NORMAL" );    nColor = COLOR_WHITE;  break;
-    case 3: strcpy( str_msg, "FAST" );  nColor = nvgRGBA(255, 100, 100, 255);  break;
+    case 3: strcpy( str_msg, "FAST" );  nColor = COLOR_WHITE;  break;
     default :  sprintf( str_msg, "%d", scene.params.nOpkrAccelProfile ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);
-  ui_print( s, x_pos+100, y_pos+800, "%s", str_msg );
+  ui_print( s, x_pos+200, y_pos+850, "%s", str_msg );
 
   nvgFontSize(s->vg, 60);
   switch( scene.cruiseState.modeSel  )
   {
-    case 0: strcpy( str_msg, "OP MODE" ); nColor = COLOR_WHITE; break;
-    case 1: strcpy( str_msg, "CURVE" );    nColor = nvgRGBA(200, 200, 255, 255);  break;
-    case 2: strcpy( str_msg, "DISTANCE" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
-    case 3: strcpy( str_msg, "HYUNDAI" );  nColor = nvgRGBA(200, 255, 255, 255);  break;
-    case 4: strcpy( str_msg, "CURVATURE" ); nColor = nvgRGBA(200, 255, 255, 255); break;
-    default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_WHITE;  break;
+    case 0: strcpy( str_msg, "OP MODE" ); nColor = COLOR_YELLOW; break;
+    case 1: strcpy( str_msg, "CURVE S.ADJUST" ); nColor = COLOR_YELLOW;  break;
+    case 2: strcpy( str_msg, "DISTANCE" );  nColor = COLOR_YELLOW;  break;
+    case 3: strcpy( str_msg, "HYUNDAI" );  nColor = COLOR_YELLOW;  break;
+    case 4: strcpy( str_msg, "CURVATURE" ); nColor = COLOR_YELLOW; break;
+    default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_YELLOW;  break;
   }
   nvgFillColor(s->vg, nColor);  
-  ui_print( s, x_pos+100, y_pos+750, str_msg );
+  ui_print( s, x_pos+100, y_pos+800, str_msg );
 }
 
 
