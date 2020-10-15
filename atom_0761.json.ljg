@@ -5,7 +5,7 @@
   "cv_sMaxV": [[480,200]],
   "cv_sdDNV": [[5,4]],
   "cv_sdUPV": [[4,3]],
-  "sR_ActuatorDelayV": [[0.325,0.325]],
+  "sR_ActuatorDelayV": [[0.375,0.375]],
   "sR_BPV": [[1.0,1.0]],
   "sR_KPH": [0,0],
   "sR_lqr_kiV": [[0.01,0.01]],
