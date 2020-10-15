@@ -2,7 +2,7 @@
   "tun_type": "lqr",
   "cv_BPV": [[30,255]],
   "cv_KPH": [0],
-  "cv_sMaxV": [[480,220]],
+  "cv_sMaxV": [[480,200]],
   "cv_sdDNV": [[5,4]],
   "cv_sdUPV": [[4,3]],
   "sR_ActuatorDelayV": [[0.325,0.325]],
