@@ -776,7 +776,7 @@ static void ui_draw_debug(UIState *s)
   x_pos = viz_speed_x + 300;
   y_pos = 120;
 
-  nvgFontSize(s->vg, 30);
+  nvgFontSize(s->vg, 40);
   switch( scene.params.nOpkrAccelProfile  )
   {
     case 1: strcpy( str_msg, "SLOW" ); nColor = nvgRGBA(100, 100, 255, 255); break;
@@ -787,7 +787,7 @@ static void ui_draw_debug(UIState *s)
   nvgFillColor(s->vg, nColor);
   ui_print( s, x_pos, y_pos+150, "%s", str_msg );
 
-  nvgFontSize(s->vg, 80);
+  nvgFontSize(s->vg, 60);
   switch( scene.cruiseState.modeSel  )
   {
     case 0: strcpy( str_msg, "OP MODE" ); nColor = COLOR_WHITE; break;
@@ -798,7 +798,7 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);  
-  ui_print( s, x_pos, y_pos+100, str_msg );
+  ui_print( s, x_pos+100, y_pos+750, str_msg );
 }
 
 
