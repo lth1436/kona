@@ -12,7 +12,7 @@
   "sR_lqr_scaleV": [[2000.0,2000.0]],
   "sR_steerRatioV": [[13.73,13.73]],
   "steerLimitTimer": 0.8,
-  "steerOffset": 2.95,
+  "steerOffset": 2.85,
   "steerRateCost": 0.5,
   "cameraOffset": 0.06,
   "sR_pid_KiV": [[0.04,0.04]],
