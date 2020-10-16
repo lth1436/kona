@@ -757,18 +757,17 @@ static void ui_draw_debug(UIState *s)
      
   //ui_print( s, x_pos, y_pos+0, "cO:%.3f  %d, %d",scene.carParams.lateralsRatom.cameraOffset, scene.cruiseState.cruiseSwState, s->livempc_or_radarstate_changed );
   ui_print( s, x_pos, y_pos+50,   "sR : %.2f", scene.pathPlan.steerRatio );
-  ui_print( s, x_pos, y_pos+100,  "aO : %.2f", scene.pathPlan.angleOffset );
-  //ui_print( s, x_pos, y_pos+100, "aD : %.2f", scene.pathPlan.steerActuatorDelay );
-  ui_print( s, x_pos, y_pos+150, "wD : %.2f", scene.pathPlan.laneWidth );
+  ui_print( s, x_pos, y_pos+150,  "aO : %.2f", scene.pathPlan.angleOffset );
+  ui_print( s, x_pos, y_pos+100, "aD : %.2f", scene.pathPlan.steerActuatorDelay );
+  ui_print( s, x_pos, y_pos+200, "wD : %.2f", scene.pathPlan.laneWidth );
   //ui_print( s, x_pos, y_pos+150, "prob : %.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
-  ui_print( s, x_pos, y_pos+200, "pL : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
+  ui_print( s, x_pos, y_pos+250, "pL : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
   //ui_print( s, x_pos, y_pos+200, "model_sum : %.1f" , scene.model_sum);
-  ui_print( s, 250, 980, "%s", scene.alert.text1 );
   //ui_print( s, x_pos+270, y_pos+800, "좌측간격(%%)       차선폭         우측간격(%%)");
   //ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
 
   //ui_print( s, 0, 1020, "%s", scene.alert.text1 );
-  ui_print( s, 300, 980, "%s", scene.alert.text1 );
+  ui_print( s, 230, 980, "%s", scene.alert.text1 );
   //ui_print( s, 0, 1078, "%s", scene.alert.text2 );
 
 
@@ -786,7 +785,7 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d", scene.params.nOpkrAccelProfile ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);
-  ui_print( s, x_pos+250, y_pos+750, "%s", str_msg );
+  ui_print( s, x_pos+350, y_pos+750, "%s", str_msg );
 
   nvgFontSize(s->vg, 60);
   switch( scene.cruiseState.modeSel  )
@@ -799,7 +798,7 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_YELLOW;  break;
   }
   nvgFillColor(s->vg, nColor);  
-  ui_print( s, x_pos+100, y_pos+800, str_msg );
+  ui_print( s, x_pos+250, y_pos+800, str_msg );
 }
 
 
