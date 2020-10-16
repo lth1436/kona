@@ -768,7 +768,7 @@ static void ui_draw_debug(UIState *s)
   //ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
 
   //ui_print( s, 0, 1020, "%s", scene.alert.text1 );
-  
+  ui_print( s, 100, 980, "%s", scene.alert.text1 );
   //ui_print( s, 0, 1078, "%s", scene.alert.text2 );
 
 
