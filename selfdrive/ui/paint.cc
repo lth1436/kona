@@ -763,12 +763,12 @@ static void ui_draw_debug(UIState *s)
   //ui_print( s, x_pos, y_pos+150, "prob : %.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
   ui_print( s, x_pos, y_pos+200, "pL : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
   //ui_print( s, x_pos, y_pos+200, "model_sum : %.1f" , scene.model_sum);
-  ui_print( s, 100, 980, "%s", scene.alert.text1 );
+  ui_print( s, 250, 980, "%s", scene.alert.text1 );
   //ui_print( s, x_pos+270, y_pos+800, "좌측간격(%%)       차선폭         우측간격(%%)");
   //ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
 
   //ui_print( s, 0, 1020, "%s", scene.alert.text1 );
-  ui_print( s, 100, 980, "%s", scene.alert.text1 );
+  ui_print( s, 300, 980, "%s", scene.alert.text1 );
   //ui_print( s, 0, 1078, "%s", scene.alert.text2 );
 
 
@@ -786,13 +786,13 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d", scene.params.nOpkrAccelProfile ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);
-  ui_print( s, x_pos+200, y_pos+850, "%s", str_msg );
+  ui_print( s, x_pos+250, y_pos+750, "%s", str_msg );
 
   nvgFontSize(s->vg, 60);
   switch( scene.cruiseState.modeSel  )
   {
     case 0: strcpy( str_msg, "OP MODE" ); nColor = COLOR_YELLOW; break;
-    case 1: strcpy( str_msg, "CURVE S.ADJUST" ); nColor = COLOR_YELLOW;  break;
+    case 1: strcpy( str_msg, "CURVE S.A" ); nColor = COLOR_YELLOW;  break;
     case 2: strcpy( str_msg, "DISTANCE" );  nColor = COLOR_YELLOW;  break;
     case 3: strcpy( str_msg, "HYUNDAI" );  nColor = COLOR_YELLOW;  break;
     case 4: strcpy( str_msg, "CURVATURE" ); nColor = COLOR_YELLOW; break;
