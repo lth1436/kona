@@ -282,8 +282,8 @@ class CarController():
     # send mdps12 to LKAS to prevent LKAS error if no cancel cmd
     can_sends.append( create_mdps12(self.packer, frame, CS.mdps12) )
 
-    str_log1 = '       Torq:{:5.0f}/{:5.0f}/{:5.0f}  CV={:5.1f}/{:5.1f}'.format(apply_steer,new_steer,dst_steer,self.model_speed,self.model_sum    )
-    str_log2 = '  Limit={:.0f} TM={:.1f} '.format(apply_steer_limit,self.timer1.sampleTime()  )
+    str_log1 = '       TORQ={:5.0f}/{:5.0f}/{:5.0f}  CV={:5.1f}/{:5.1f}'.format(apply_steer,new_steer,dst_steer,self.model_speed,self.model_sum    )
+    str_log2 = '  LIMIT={:.0f} TM={:.1f} '.format(apply_steer_limit,self.timer1.sampleTime()  )
     trace1.printf( '{} {}'.format( str_log1, str_log2 ) )
 
     run_speed_ctrl = self.param_OpkrAccelProfile and CS.acc_active and self.SC != None
