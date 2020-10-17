@@ -767,7 +767,7 @@ static void ui_draw_debug(UIState *s)
   //ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
 
   //ui_print( s, 0, 1020, "%s", scene.alert.text1 );
-  ui_print( s, 230, 980, "%s", scene.alert.text1 );
+  ui_print( s, 210, 980, "%s", scene.alert.text1 );
   //ui_print( s, 0, 1078, "%s", scene.alert.text2 );
 
 
@@ -785,7 +785,7 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d", scene.params.nOpkrAccelProfile ); nColor = COLOR_WHITE;  break;
   }
   nvgFillColor(s->vg, nColor);
-  ui_print( s, x_pos+350, y_pos+750, "%s", str_msg );
+  ui_print( s, x_pos+250, y_pos+750, "%s", str_msg );
 
   nvgFontSize(s->vg, 60);
   switch( scene.cruiseState.modeSel  )
@@ -798,7 +798,7 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_YELLOW;  break;
   }
   nvgFillColor(s->vg, nColor);  
-  ui_print( s, x_pos+200, y_pos+800, str_msg );
+  ui_print( s, x_pos+100, y_pos+800, str_msg );
 }
 
 
