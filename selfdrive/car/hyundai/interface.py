@@ -81,15 +81,15 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 13.27 * 1.15  # 15% higher at the center seems 15.26
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]    
-    elif candidate == CAR.KONA_HEV:
-      #ret.lateralTuning.pid.kf = 0.00006
+    elif candidate == CAR.KONA_HEV:      
       ret.mass = 1453. + STD_CARGO_KG
       ret.wheelbase = 2.6      
       ret.steerRateCost = 0.5       
       ret.steerLimitTimer = 0.8
       ret.steerActuatorDelay = 0.375
-      #tire_stiffness_factor = 0.945
       ret.steerRatio = 13.73 * 1.15   # SPEC
+      #tire_stiffness_factor = 0.945
+      #ret.lateralTuning.pid.kf = 0.00006
       #ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       #ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]       
       #lqr
