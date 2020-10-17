@@ -84,9 +84,9 @@ class CarInterface(CarInterfaceBase):
     elif candidate == CAR.KONA_HEV:      
       ret.mass = 1453. + STD_CARGO_KG
       ret.wheelbase = 2.6      
-      ret.steerRateCost = 0.5       
+      ret.steerRateCost = 0.55       
       ret.steerLimitTimer = 0.8
-      ret.steerActuatorDelay = 0.375
+      ret.steerActuatorDelay = 0.350
       ret.steerRatio = 13.73 * 1.15   # SPEC
       #tire_stiffness_factor = 0.945
       #ret.lateralTuning.pid.kf = 0.00006
