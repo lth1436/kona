@@ -86,7 +86,7 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.6      
       ret.steerRateCost = 0.55       
       ret.steerLimitTimer = 0.8
-      ret.steerActuatorDelay = 0.350
+      ret.steerActuatorDelay = 0.300
       ret.steerRatio = 13.73 * 1.15   # SPEC
       #tire_stiffness_factor = 0.945
       #ret.lateralTuning.pid.kf = 0.00006
