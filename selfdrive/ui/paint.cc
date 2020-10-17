@@ -798,7 +798,7 @@ static void ui_draw_debug(UIState *s)
     default :  sprintf( str_msg, "%d.NORMAL", scene.cruiseState.modeSel ); nColor = COLOR_YELLOW;  break;
   }
   nvgFillColor(s->vg, nColor);  
-  ui_print( s, x_pos+250, y_pos+800, str_msg );
+  ui_print( s, x_pos+200, y_pos+800, str_msg );
 }
 
 
