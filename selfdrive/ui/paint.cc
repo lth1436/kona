@@ -756,12 +756,14 @@ static void ui_draw_debug(UIState *s)
   
      
   //ui_print( s, x_pos, y_pos+0, "cO:%.3f  %d, %d",scene.carParams.lateralsRatom.cameraOffset, scene.cruiseState.cruiseSwState, s->livempc_or_radarstate_changed );
-  ui_print( s, x_pos, y_pos+50,   "sR : %.3f", scene.pathPlan.steerRatio );
-  ui_print( s, x_pos, y_pos+150,  "aO : %.3f", scene.pathPlan.angleOffset );
-  ui_print( s, x_pos, y_pos+100, "aD : %.3f", scene.pathPlan.steerActuatorDelay );
-  ui_print( s, x_pos, y_pos+200, "wD : %.2f", scene.pathPlan.laneWidth );
+  ui_print( s, x_pos, y_pos+50,   "sR(L,P) : %.3f, %.3f", scene.liveParams.steerRatio, scene.pathPlan.steerRatio );
+  ui_print( s, x_pos, y_pos+100, "tSF(L) : %.3f", scene.liveParams.stiffnessFactor );
+  ui_print( s, x_pos, y_pos+150,  "aD(P) : %.3f", scene.pathPlan.steerActuatorDelay );
+  ui_print( s, x_pos, y_pos+200,  "aO(L,P) : %.3f, %.3f", scene.liveParams.angleOffset, scene.pathPlan.angleOffset );
+  ui_print( s, x_pos, y_pos+250,  "aOA(L) : %.3f", scene.liveParams.angleOffsetAverage );  
+  ui_print( s, x_pos, y_pos+300,  "wD(P) : %.3f", scene.pathPlan.laneWidth );
   //ui_print( s, x_pos, y_pos+150, "prob : %.2f, %.2f", scene.pathPlan.lProb, scene.pathPlan.rProb );
-  ui_print( s, x_pos, y_pos+250, "pL : %.2f, %.2f", scene.pathPlan.lPoly, scene.pathPlan.rPoly );
+  ui_print( s, x_pos, y_pos+350, "pL(P) : %.3f, %.3f", scene.pat hPlan.lPoly, scene.pathPlan.rPoly );
   //ui_print( s, x_pos, y_pos+200, "model_sum : %.1f" , scene.model_sum);
   //ui_print( s, x_pos+270, y_pos+800, "좌측간격(%%)       차선폭         우측간격(%%)");
   //ui_print( s, x_pos+270, y_pos+850, "      %4.1f                 %4.1f                  %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100 );
