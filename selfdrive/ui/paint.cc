@@ -605,7 +605,7 @@ static void ui_draw_debug(UIState *s)
     nvgFontFace(s->vg, "sans-semibold");
     nvgFillColor(s->vg, COLOR_WHITE_ALPHA(150));    
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "Curvature");
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "커브곡률");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.4f", scene.curvature);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " 좌측간격(m)    차선폭(m)    우측간격(m)");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%.2f                    %.2f                    %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
