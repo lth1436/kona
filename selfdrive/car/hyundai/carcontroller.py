@@ -8,8 +8,7 @@ from selfdrive.car import apply_std_steer_torque_limits
 from selfdrive.car.hyundai.hyundaican import create_lkas11, create_clu11, create_lfa_mfa, \
   create_scc11, create_scc12, create_scc13, create_scc14, \
   create_mdps12, create_spas11, create_spas12, create_ems11
-from selfdrive.car.hyundai.scc_smoother import SccSmoother, WAIT_COUNT_MIN, WAIT_COUNT_MAX, \
-  ALIVE_COUNT_MIN, ALIVE_COUNT_MAX
+from selfdrive.car.hyundai.scc_smoother import SccSmoother
 from selfdrive.car.hyundai.values import Buttons, SteerLimitParams, CAR, FEATURES
 from opendbc.can.packer import CANPacker
 from selfdrive.config import Conversions as CV
@@ -214,9 +213,9 @@ class CarController():
         can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.scc_bus, CS.clu11, Buttons.RES_ACCEL, clu11_speed))
         self.resume_cnt += 1
 
-        if self.resume_cnt >= ALIVE_COUNT_MIN:
+        if self.resume_cnt >= 8:
           self.resume_cnt = 0
-          self.resume_wait_timer = randint(WAIT_COUNT_MIN, WAIT_COUNT_MAX)
+          self.resume_wait_timer = SccSmoother.get_wait_count()
 
     # reset lead distnce after the car starts moving
     elif self.last_lead_distance != 0:

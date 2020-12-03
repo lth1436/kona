@@ -17,6 +17,7 @@ extern "C"{
 
 #include "paint.hpp"
 #include "sidebar.hpp"
+#include "extras.h"
 
 #ifdef QCOM2
 const int vwp_w = 2160;
@@ -296,6 +297,7 @@ static void ui_draw_world(UIState *s) {
       draw_lead(s, scene->lead_data[1]);
     }
   //}
+
   nvgRestore(s->vg);
 }
 
@@ -632,9 +634,14 @@ static void bb_ui_draw_debug(UIState *s)
     const UIScene *scene = &s->scene;
     char str[1024];
 
-    snprintf(str, sizeof(str), "SR: %.2f, SRC: %.3f, SAD: %.3f", scene->path_plan.getSteerRatio(),
+    cereal::CarControl::SccSmoother::Reader scc_smoother = scene->car_control.getSccSmoother();
+    std::string sccLogMessage = std::string(scc_smoother.getLogMessage());
+
+    snprintf(str, sizeof(str), "SR: %.2f, SRC: %.3f, SAD: %.3f%s%s", scene->path_plan.getSteerRatio(),
                                                         scene->path_plan.getSteerRateCost(),
-                                                        scene->path_plan.getSteerActuatorDelay()
+                                                        scene->path_plan.getSteerActuatorDelay(),
+                                                        sccLogMessage.size() > 0 ? ", " : "",
+                                                        sccLogMessage.c_str()
                                                         );
 
     int x = scene->viz_rect.x + (bdr_s * 2);
@@ -642,43 +649,8 @@ static void bb_ui_draw_debug(UIState *s)
 
     nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
 
-    ui_draw_text(s->vg, x, y, str, 25 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+    ui_draw_text(s->vg, x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
 
-
-#if 1
-    /////////////////////////////////////////////////////////////////////////////////////////
-    int w = 184;
-    x = (s->scene.viz_rect.x + (bdr_s*2)) + 220;
-    y = 100;
-    int xo = 180;
-    int height = 70;
-
-    cereal::CarControl::SccSmoother::Reader scc_smoother = scene->car_control.getSccSmoother();
-
-    nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-    const int text_x = x + (xo / 2) + (w / 2);
-
-    int model = 0;
-    snprintf(str, sizeof(str), "D: %.1f, relVel: %.1f, prob: %.1f", scene->model_lead_data[model].getDist(),
-                                            scene->model_lead_data[model].getRelVel(),
-                                            scene->model_lead_data[model].getProb());
-
-    ui_draw_text(s->vg, text_x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_regular);
-
-
-    y += height;
-    model = 0;
-    snprintf(str, sizeof(str), "D: %.1f, relVel: %.1f, prob: %.1f", scene->model_lead_data[model].getDist(),
-                                            scene->model_lead_data[model].getRelVel(),
-                                            scene->model_lead_data[model].getProb());
-
-    ui_draw_text(s->vg, text_x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_regular);
-
-    y += height;
-    snprintf(str, sizeof(str), "%s", std::string(scc_smoother.getLogMessage()).c_str());
-
-    ui_draw_text(s->vg, text_x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_regular);
-#endif
     /*
 
     int w = 184;
@@ -960,6 +932,7 @@ static void ui_draw_vision_header(UIState *s) {
   ui_draw_vision_speed(s);
   //ui_draw_vision_event(s);
   bb_ui_draw_UI(s);
+  ui_draw_exras(s);
 }
 
 static void ui_draw_vision_footer(UIState *s) {

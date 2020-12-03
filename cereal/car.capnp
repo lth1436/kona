@@ -302,6 +302,7 @@ struct CarControl {
   struct SccSmoother {
     state @0 :UInt32;
     logMessage @1 :Text;
+    roadLimitSpeed @2 :UInt32;
   }
 
   struct Actuators {
