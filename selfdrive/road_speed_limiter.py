@@ -76,7 +76,7 @@ class RoadSpeedLimiter:
         MAX_LIMIT = 120
 
       if cam_limit_speed_left_dist is not None and cam_limit_speed is not None and cam_limit_speed_left_dist > 0:
-        if MIN_LIMIT <= cam_limit_speed <= MAX_LIMIT and cam_limit_speed_left_dist < (cam_limit_speed / 3.6) * 15:
+        if MIN_LIMIT <= cam_limit_speed <= MAX_LIMIT and cam_limit_speed_left_dist < (cam_limit_speed / 3.6) * 10:
           return cam_limit_speed, cam_limit_speed
 
         return 0, cam_limit_speed
